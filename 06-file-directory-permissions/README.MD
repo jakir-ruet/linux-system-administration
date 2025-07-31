@@ -205,7 +205,6 @@ mkdir a
 cd a
 mkdir b
 cd b
-cd b
 mkdir c
 cd c
 echo "Hello, Soft Link. How are you" > info-soft-link.txt

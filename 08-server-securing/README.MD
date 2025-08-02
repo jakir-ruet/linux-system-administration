@@ -405,6 +405,7 @@ openssl x509 -req -days 365 -in mydomain.csr -signkey mydomain.key -out mydomain
 To get a trusted certificate, submit mydomain.csr to a public CA (e.g., Let's Encrypt, `GoDaddy`, `DigiCert`, etc.). The CA will return a `mydomain.crt` file (or bundle) which you can install on your server.
 
 - Use in Apache/Nginx
+
 | nginx                                              | apache                                              |
 | -------------------------------------------------- | --------------------------------------------------- |
 | N/A                                                | SSLEngine on                                        |

@@ -88,6 +88,7 @@ ps -u
 ```
 
 - The terminology is as follows:
+
 |  SL   | Command | Explanation                                   |
 | :---: | :-----: | :-------------------------------------------- |
 |   1   |  `PID`  | Process ID                                    |

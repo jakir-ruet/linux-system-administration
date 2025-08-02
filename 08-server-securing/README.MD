@@ -166,6 +166,7 @@ iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT # Allow establi
 iptables -t nat -A PREROUTING -p tcp --dport 80 -j DNAT --to-destination 192.168.1.2:8080
 iptables -t nat -A POSTROUTING -j MASQUERADE
 ```
+
 This example forwards incoming HTTP traffic (port 80) to a different server (`192.168.1.2`) on port `8080`.
 
 1. **Logging Dropped Packets:** You might want to log packets that are being dropped by your firewall rules.
@@ -250,9 +251,9 @@ whether to allow or deny access—are cached in
 
 #### Packages
 
-##### Policy Packages:.
+##### Policy Packages
 
-- `selinux-policy-targeted `– The standard SELinux policy package.
+- `selinux-policy-targeted`– The standard SELinux policy package.
 - `selinux-policy-mls` – For multi-level security (MLS) configurations.
 
 ```bash
@@ -262,7 +263,7 @@ sudo dnf install selinux-policy
 sudo dnf install selinux-policy-targeted
 ```
 
-##### Tools:
+##### Tools
 
 - `policycoreutils` – Core utilities for SELinux policy management.
 - `policycoreutils-gui` – Graphical utilities for managing SELinux.
@@ -369,3 +370,43 @@ Both are `cryptographic` protocols designed to secure communication over a netwo
 ✅ TLS is the `new and secure version` used today instead of SSL.
 
 ![Transport Layer Security](/img/TSL.png)
+
+### SSL/TSL, CSR Certificate generate and use
+
+- `Step 1:` Generate Private Key
+
+```bash
+openssl genrsa -out mydomain.key 2048
+```
+
+- `Step 2:` Generate CSR (Certificate Signing Request)
+
+```bash
+openssl req -new -key mydomain.key -out mydomain.csr
+ls -la
+cat mydomain.key
+cat mydomain.csr
+```
+
+- `Step 3:` View CSR Content (Optional)
+
+```bash
+openssl req -in mydomain.csr -noout -text
+```
+
+- `Step 4:` Self-sign the Certificate (for testing only)
+
+```bash
+openssl x509 -req -days 365 -in mydomain.csr -signkey mydomain.key -out mydomain.crt
+```
+
+- `Step 5:` Submit CSR to a Certificate Authority (CA)
+
+To get a trusted certificate, submit mydomain.csr to a public CA (e.g., Let's Encrypt, `GoDaddy`, `DigiCert`, etc.). The CA will return a `mydomain.crt` file (or bundle) which you can install on your server.
+
+- Use in Apache/Nginx
+| nginx                                              | apache                                              |
+| -------------------------------------------------- | --------------------------------------------------- |
+| N/A                                                | SSLEngine on                                        |
+| ssl_certificate /etc/ssl/certs/mydomain.crt;       | SSLCertificateFile /etc/ssl/certs/mydomain.crt      |
+| ssl_certificate_key /etc/ssl/private/mydomain.key; | SSLCertificateKeyFile /etc/ssl/private/mydomain.key |

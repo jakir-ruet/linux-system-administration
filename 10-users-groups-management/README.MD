@@ -158,7 +158,7 @@ gpasswd -d jasim developer
 
 The sudoers group is a system group. Its `sudoers` group in Linux is a special user group that is typically used to grant `sudo` privileges to users, allowing them to execute commands as the `root`/`superuser` or other users with administrative privileges.
 
-[!User Privilege](/img/user-privillege.png)
+![User Privilege](/img/user-privilege.png)
 
 Add a user to the sudoers group in `Debian`
 

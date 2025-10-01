@@ -220,7 +220,7 @@ Given:
 6. Locate which subnet 175.231.232.116 belongs to:
 Subnet ID = 175.231.232.96.
 
->*Note*** In between = 175.231.232.96 to 175.231.232.127, because 96 + 32 = 128.
+>**Note** In between = 175.231.232.96 to 175.231.232.127, because 96 + 32 = 128.
 
 7. First valid host = 175.231.232.97
 8. Last valid host = 175.231.232.126

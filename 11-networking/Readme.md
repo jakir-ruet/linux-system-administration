@@ -368,4 +368,37 @@ Using a **/27** subnet instead of the default **/16** helps in efficient IP addr
 | `route del default gw 192.168.1.1`           | Delete the default gateway                                   |
 | `route add -net 192.168.2.0 netmask 255.255.255.0 gw 192.168.1.1` | Add a static route to a network                              |
 
+### Networking Prerequisite Switching, Routing, Gateways CNI in kubernetes
 
+- Switching
+- Routing
+- Default Gateway
+- DNS
+  - DNS Configurations on Linux
+  - CoreDNS Introduction
+  - Network Namespaces
+  - Docker Networking
+
+![switching](/img/switching.png)
+![routing](/img/routing-1.png)
+![routing](/img/routing-2.png)
+![routing](/img/routing-3.png)
+![routing](/img/routing-4.png)
+![routing](/img/routing-5.png)
+![name-resolution](/img/name-resolution-1.png)
+![name-resolution](/img/name-resolution-2.png)
+
+#### Network Namespace
+
+A network namespace is a feature in the Linux kernel that provides isolated network environments for processes. It allows multiple network stacks to coexist on a single system, each with its own interfaces, routing tables, firewall rules, and so on.
+
+Key Concepts
+- Each network namespace has:
+- Its own network interfaces (e.g., `eth0`, `lo`)
+- Its own IP addresses
+- Its own routing tables
+- Its own firewall (iptables/nftables) rules
+- Its own ARP tables, etc.
+- By default, all processes share the default network namespace.
+
+![network-namespace](/img/network-namespace.png)

@@ -294,7 +294,7 @@ Using a **/27** subnet instead of the default **/16** helps in efficient IP addr
 | `ip link set em1 up`                         | Bring a device online                                     |
 | `ip link set em1 down`                       | Bring a device offline                                    |
 
-**The ifconfig CommanD** Wired Network Interfaces
+**The ifconfig Command** Wired Network Interfaces
 
 | Command                                          | Purpose                                                       |
 |--------------------------------------------------|---------------------------------------------------------------|

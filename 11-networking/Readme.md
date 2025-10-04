@@ -1,6 +1,7 @@
 ### Internet Protocol (IP)
 
 An Internet Protocol address (IP address) is a numerical label such as 172.16.254.1 that is connected to a computer network that uses the Internet Protocol for communication. An IP address serves two main functions: network interface identification, and location addressing. The are two versions of IP address
+
 1. IPv4 (8-bit)
 2. IPv6 (128-bit)
 
@@ -84,19 +85,20 @@ A Private IP is an IP address used within a private network to identify devices 
 
 - Used in: Home networks, LANs (Local Area Networks)
 - Example ranges (IPv4):
-   - 10.0.0.0 to 10.255.255.255
-   - 172.16.0.0 to 172.31.255.255
-   - 192.168.0.0 to 192.168.255.255
+  - 10.0.0.0 to 10.255.255.255
+  - 172.16.0.0 to 172.31.255.255
+  - 192.168.0.0 to 192.168.255.255
 
 >**Key Point:** Private IPs are assigned by routers and cannot be accessed directly from the internet.
 
-##### What is a Public IP Address:
+##### What is a Public IP Address
 
 A Public IP is an IP address assigned to a device that is directly accessible over the internet. It is unique across the entire web.
 
 - Used in: Websites, servers, home routers (as seen by ISPs)
 - Assigned by: Internet Service Providers (ISPs)
 - Can be: Static or dynamic
+
 >**Key Point:** Public IPs are needed for internet communication and are globally unique.
 
 ##### Difference between Private IP & Public IP
@@ -118,7 +120,7 @@ A subnet, or subnetwork, is a network inside a network. Subnets make networks mo
 ##### Why Use Subnetting?
 Here are important reasons for using Subnetting:
 
-- It helps you to maximise IP addressing efficiency.
+- It helps you to maximize IP addressing efficiency.
 - Extend the life of IPV4.
 - Public IPV4 Addresses are scarce.
 - IPV4 Subnetting reduces network traffic by eliminating collision and broadcast traffic and thus improves overall performance.
@@ -148,7 +150,7 @@ A subnet mask is a 32-bit address used to distinguish between a network address 
 
 >**Notes**: `1` represent networks, `0` represent hosts
 
-##### Two types of subnet masks are:
+##### Two types of subnet masks are
 
 - The default Subnet Mask is the number of bits which is reserved by the address class. Using this default mask will accommodate a single network subnet in the relative class.
 - A Custom Subnet Mask can be defined by an administrator to accommodate many networks.
@@ -172,6 +174,7 @@ Suppose you are given the IP `175.231.232.116`/`27`.
 **Solution:**
 
 Let’s understand the problem
+
 - IP address: `175.231.232.116`
 - CIDR notation: Given `mask /27` means the `first 27` bits are network bits
 - Default `mask /16` of class B
@@ -191,6 +194,7 @@ Let’s understand the problem
 >**Suppose**
 
 Given:
+
 - `x` = number of 1’s in last octet = **3**
 - `y` = number of 0’s in last octet = **5**
 - `z` = Given mask `/27` = **27**
@@ -243,7 +247,8 @@ Summary:
 #### As we know, the default CIDR value of class B is /16, so why is /27 used in 175.231.232.116/27?
 Understanding that the `default /16 mask for Class B is often too large` for many real-world networks, and that subnetting with something like `/27` is used to create smaller, manageable subnets with fewer hosts, is spot on. Using `/27` instead of the default /16 helps:
 
-##### Benefits of using `/27`:
+##### Benefits of using `/27`
+
 - Allocates IP addresses **efficiently**
 - Improves **network management**
 - Reduces **broadcast traffic**
@@ -270,6 +275,7 @@ Using a **/27** subnet instead of the default **/16** helps in efficient IP addr
  A network interface is a hardware or software device that allows a computer to connect to a network and send and receive data. Can be referred to as a Network Interface Card or Controller (NIC), Network Adaptor, or LAN adaptor.
 
 #### Types of
+
 - Wired Network Interfaces
 - Wireless Network Interfaces
 
@@ -393,6 +399,7 @@ Using a **/27** subnet instead of the default **/16** helps in efficient IP addr
 A network namespace is a feature in the Linux kernel that provides isolated network environments for processes. It allows multiple network stacks to coexist on a single system, each with its own interfaces, routing tables, firewall rules, and so on.
 
 Key Concepts
+
 - Each network namespace has:
 - Its own network interfaces (e.g., `eth0`, `lo`)
 - Its own IP addresses

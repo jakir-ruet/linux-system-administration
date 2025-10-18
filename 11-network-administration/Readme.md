@@ -204,7 +204,7 @@ Given:
 1. Subnet Mask is 255.255.255.224
 2. Block size = 256 - LOSM = 256 - 224=32
 3. Number of Subnets = 2^(k - y) = 2^(16 - 5) = 2¹¹ = 2048
-4. Number of Hosts per Subnet = 2^5 - 2 = 32 - 2 = 30.
+4. Number of Hosts per Subnet = 2^(Total IP Bits - Given Mask) = 2^(32-27) - 2 = 2^5 = 32 - 2 = 30.
 
 >**Notes** (Subtract 2 for network and broadcast addresses)
 
@@ -409,3 +409,4 @@ Key Concepts
 - By default, all processes share the default network namespace.
 
 ![network-namespace](/img/network-namespace.png)
+

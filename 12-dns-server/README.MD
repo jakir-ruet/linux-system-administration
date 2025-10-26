@@ -126,22 +126,105 @@ DNS servers store results of DNS queries for a period of time (called the Time t
 @ IN PTR example.com.
 ```
 
-#### DNS Record Types: A, PTR, NS, MX, SOA, TXT etc.
+#### DNS Record Types: A, PTR, NS, MX, SOA, TXT etc
 There are many DNS record types, but here are some of the key ones:
 
-| Record Type | Purpose                                                     |
-| ----------- | ----------------------------------------------------------- |
-| A           | Maps a domain to an IPv4 address.                           |
-| AAAA        | Maps a domain to an IPv6 address.                           |
-| CNAME       | Maps a domain to another domain (used for aliasing).        |
-| MX          | Specifies mail servers for email delivery.                  |
-| TXT         | Holds arbitrary text (e.g., SPF, domain verification).      |
-| NS          | Lists authoritative name servers for the domain.            |
-| SOA         | Start of Authority – provides info about the domain/zone.   |
-| SRV         | Specifies location of services (e.g., SIP, XMPP).           |
-| Alias       | AWS-specific alias to AWS resources (e.g., S3, CloudFront). |
+| Record Type | Purpose                                                          |
+| ----------- | ---------------------------------------------------------------- |
+| A           | Maps (Translate) a domain to an IPv4 address.                    |
+| AAAA        | Maps (Translate) a domain to an IPv6 address.                    |
+| CNAME       | Maps (Translate) a domain to another domain (used for aliasing). |
+| MX          | Specifies mail servers for email delivery.                       |
+| TXT         | Holds arbitrary text (e.g., SPF, domain verification).           |
+| NS          | Lists authoritative name servers for the domain.                 |
+| SOA         | Start of Authority – provides info about the domain/zone.        |
+| SRV         | Specifies location of services (e.g., SIP, XMPP).                |
+| Alias       | AWS-specific alias to AWS resources (e.g., S3, CloudFront).      |
 
-#### DNS Testing Utilities: nslookup, Host, Dig etc.
+#### Alias vs CNAME in Route 53
+
+| Feature                         | **Alias Record**                                                  | **CNAME Record**                         |
+| ------------------------------- | ----------------------------------------------------------------- | ---------------------------------------- |
+| **Purpose**                     | AWS-specific pointer to AWS resources (CloudFront, ELB, S3, etc.) | Points one domain to another domain name |
+| **Works at root domain (apex)** | Yes (`example.com`)                                               | No (`www.example.com` only)              |
+| **AWS Integration**             | Tracks AWS resources automatically                                | No AWS integration                       |
+| **Query Cost**                  | Free (no extra DNS charges)                                       | Standard DNS charges apply               |
+| **TTL**                         | Managed by Route 53                                               | Set manually                             |
+| **Standard DNS type**           | Proprietary (AWS-only)                                            | Standard (RFC-compliant)                 |
+
+> In short
+
+- Use `Alias` for AWS resources and root domains.
+- Use `CNAME` for subdomains and external targets.
+
+> Example
+
+- **Alias** > Points a domain to an AWS resource (e.g., example.com → myapp-alb-1234567890.us-east-1.elb.amazonaws.com)
+- **CNAME** > Points a domain/subdomain to another domain name (e.g., app.example.com → myapp-alb-1234567890.us-east-1.elb.amazonaws.com)
+
+#### Routing Policy
+
+There are `seven` main routing policies in Route 53. Here’s a clear breakdown:
+
+1. Simple Routing Policy
+
+```bash
+example.com → 192.0.2.44
+```
+
+2. Weighted Routing Policy
+
+```bash
+Record 1: 70 → us-east-1 server
+Record 2: 30 → us-west-1 server
+```
+
+3. Geolocation Routing Policy
+
+```bash
+Europe → EU servers
+Asia → APAC servers
+```
+
+4. Geoproximity Routing Policy (with Route 53 Traffic Flow only)
+
+```bash
+90% to nearest region, but shift +10% toward US-East
+```
+
+5. Latency-based Routing Policy
+
+```bash
+Asia users → ap-southeast-1
+US users → us-east-1
+```
+
+6. Failover Routing Policy
+
+```bash
+Primary → Active site
+Secondary → Disaster recovery site
+```
+
+7. Multi-Value Answer Routing Policy
+
+```bash
+example.com → [192.0.2.1, 192.0.2.2, 192.0.2.3]
+```
+
+##### Summary Table
+
+| Routing Policy    | Key Use Case            | Health Checks | Traffic Distribution |
+| ----------------- | ----------------------- | ------------- | -------------------- |
+| **Simple**        | Single resource         | Optional      | N/A                  |
+| **Weighted**      | A/B testing             | Optional      | By weights           |
+| **Geolocation**   | Route by country/region | Optional      | By location          |
+| **Geoproximity**  | Route by distance       | Optional      | By proximity/bias    |
+| **Latency-based** | Best performance        | Optional      | By latency           |
+| **Failover**      | High availability       | Required      | Primary/Secondary    |
+| **Multi-Value**   | Basic load balancing    | Optional      | Random healthy IPs   |
+
+#### DNS Testing Utilities: nslookup, Host, Dig etc
 
 These tools help you query DNS servers and troubleshoot DNS issues.
 

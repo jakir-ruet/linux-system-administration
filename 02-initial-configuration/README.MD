@@ -1,22 +1,57 @@
 #### Initial Configuration
+
 ```bash
 sudo apt upgrade
 sudo apt install net-tools
 sudo apt update
 ```
+
+#### Windows Subsystem for Linux
+
+##### RedHat
+
+```bash
+wsl --list --verbose
+wsl --import RHEL C:\WSL\RHEL C:\Users\Jakir\Downloads\Compressed\rhel-10.0-x86_64-wsl2.tar.gz --version 2
+mkdir C:\WSL\RHEL
+wsl -d RHEL
+sudo subscription-manager register
+sudo dnf update -y
+wsl --set-default RHEL # Set RedHat as the default WSL distro
+```
+
+##### Ubuntu
+
+```bash
+wsl --list --verbose
+mkdir C:\WSL\Ubuntu
+wsl --install -d Ubuntu-22.04 # Install from Microsoft Store or WSL directly
+# Manual
+wsl --import Ubuntu-22.04 C:\WSL\Ubuntu C:\Users\Jakir\Downloads\Compressed\ubuntu-22.04-x86_64-wsl2.tar.gz --version 2
+wsl -d Ubuntu-22.04
+sudo apt update && sudo apt upgrade -y
+sudo apt install -y build-essential curl wget git vim unzip htop net-tools
+wsl --set-default Ubuntu-22.04 # Set Ubuntu as the default WSL distro
+```
+
 #### Setup static IP Address
+
 ```bash
 ip a
 ip addr
 ifconfig
 ifconfig -a
 ```
+
 Go to `/etc/netplan/`
+
 ```bash
 cp 00-installer-config.yaml 00-installer-config.yaml_bak # take backup
 nano 00-installer-config.yaml
 ```
+
 Initialize IP Address on `00-installer-config.yaml`
+
 ```YAML
 # This is the network config written by 'subiquity'
 network:
@@ -29,7 +64,9 @@ network:
         addresses: [192.18.145.1, 8.8.8.8]
   version: 2
 ```
+
 Or
+
 ```YAML
 # This is the network config written by 'subiquity'
 network:
@@ -46,9 +83,11 @@ network:
       nameservers:
         addresses: [192.18.145.1,8.8.8.8]
 ```
+
 ```bash
 control + x # save & exit
 ```
+
 ```bash
 netplan try
 netplan apply
@@ -58,16 +97,21 @@ ifconfig
 ```
 
 #### Static IP Configuration in RedHat
+
 ```bash
 nmcli connection show
 cd /etc/NetworkManager/system-connections/
 nano ens160.nmconnection
 ```
+
 Check default gateway
+
 ```bash
 netstat -nr | grep default
 ```
+
 Put this configuration
+
 ```ini
 [ipv4]
 method=manual
@@ -75,6 +119,7 @@ addresses=192.168.1.100/24
 gateway=192.168.1.254
 dns=8.8.8.8;
 ```
+
 ```bash
 systemctl restart NetworkManager
 ip a show ens160
@@ -84,7 +129,8 @@ nmcli connection show
 #### In details of Vi/Vim Editor
 It is a powerful text editor used in Linux for efficient file editing, programming, and system administration. It’s an advanced version of `vi` with more features.
 
-Vim has three main modes:  
+Vim has three main modes:
+
 | Mode             | Description                             | How to Enter             |
 | ---------------- | --------------------------------------- | ------------------------ |
 | **Normal Mode**  | Default mode for navigation & commands  | Press `Esc`              |
@@ -92,6 +138,7 @@ Vim has three main modes:
 | **Command Mode** | Used for saving, quitting, and searches | Press `:` in Normal Mode |
 
 Opening, Saving & Exiting Vim
+
 | Action                  | Command        |
 | ----------------------- | -------------- |
 | Open a file in Vim      | `vim filename` |
@@ -102,6 +149,7 @@ Opening, Saving & Exiting Vim
 | Save and force quit     | `:wq!`         |
 
 Navigation in Normal Mode
+
 | Action                            | Command                        |
 | --------------------------------- | ------------------------------ |
 | Move cursor top/right/bottom/left | `↑` / `→` / `↓` / `←`          |
@@ -112,6 +160,7 @@ Navigation in Normal Mode
 | Search for text                   | `/keyword` or `?keyword`       |
 
  Editing Text
+
 | Action                              | Command    |
 | ----------------------------------- | ---------- |
 | Insert before/after cursor          | `i` / `a`  |
@@ -125,6 +174,7 @@ Navigation in Normal Mode
 | Redo last undo                      | `Ctrl + r` |
 
 Advanced Features
+
 | Action                     | Command           |
 | -------------------------- | ----------------- |
 | Open a new split window    | `:split filename` |
@@ -134,6 +184,7 @@ Advanced Features
 
 #### In details of Nano Editor
 Operation & Navigation
+
 |  SL   | Hit Key                  | Explanation                         |
 | :---: | :----------------------- | :---------------------------------- |
 |   1   | CTRL + Z                 | Suspend                             |
@@ -158,6 +209,7 @@ Operation & Navigation
 |  20   | ALT + /                  | To bottom of buffer                 |
 
 Case Conversion
+
 |  SL   | Hit Key | Explanation                                      |
 | :---: | :------ | :----------------------------------------------- |
 |   1   | ALT + L | Convert the selected text to lowercase           |
@@ -165,6 +217,7 @@ Case Conversion
 |   3   | ALT + C | Capitalize the selected text or the current word |
 
 File Handling
+
 |  SL   | Hit Key  | Explanation                                             |
 | :---: | :------- | :------------------------------------------------------ |
 |   1   | CTRL + S | Save current file                                       |
@@ -174,7 +227,8 @@ File Handling
 |   5   | CTRL + W | Write the current file to a different filename          |
 |   6   | CTRL + T | Invoke the spell checker on the current file            |
 
-Editing Shortcuts 
+Editing Shortcuts
+
 |  SL   | Hit Key      | Explanation                        |
 | :---: | :----------- | :--------------------------------- |
 |   1   | CTRL + K     | Cut current line into cutbuffer    |
@@ -188,7 +242,8 @@ Editing Shortcuts
 |   9   | ALT + U      | Undo last action                   |
 |  10   | ALT + E      | Redo last undone action            |
 
-Search Shortcuts 
+Search Shortcuts
+
 |  SL   | Hit Key             | Explanation                                                           |
 | :---: | :------------------ | :-------------------------------------------------------------------- |
 |   1   | CTRL + W            | Start forward search                                                  |
@@ -208,7 +263,8 @@ Search Shortcuts
 |  15   | CTRL + W + CTRL + C | Count the number of occurrences of the search pattern                 |
 |  16   | CTRL + W + CTRL + G | Cancel the search and return to editing                               |
 
-Replace Shortcuts 
+Replace Shortcuts
+
 |  SL   | Hit Key             | Explanation                                                 |
 | :---: | :------------------ | :---------------------------------------------------------- |
 |   1   | CTRL + W + CTRL + T | Replace the current occurrence of the search pattern        |
@@ -216,7 +272,8 @@ Replace Shortcuts
 |   3   | CTRL + W + CTRL + A | Replace all occurrences of the search pattern interactively |
 |   4   | CTRL + W + CTRL + I | Interactive replace with confirmation for each occurrence   |
 
-Deleting Shortcuts 
+Deleting Shortcuts
+
 |  SL   | Hit Key    | Explanation                    |
 | :---: | :--------- | :----------------------------- |
 |   1   | CTRL + H   | Delete character before cursor |
@@ -228,6 +285,7 @@ Deleting Shortcuts
 #### Java & OpenJDK Install
 ##### Path Variable Setup like [Open JDK Install](https://jdk.java.net/21/)
 Recommended way
+
 ```bash
 apt update
 java -version
@@ -248,6 +306,7 @@ echo $JAVA_HOME
 ```
 
 Another way
+
 ```bash
 apt install openjdk-21-jre-headless
 find /usr/lib/jvm/java-21-openjdk-arm64/java* | head -n 3 # searching if required
@@ -260,7 +319,3 @@ java --version
 echo $PATH
 echo $JAVA_HOME
 ```
-
-
-
-

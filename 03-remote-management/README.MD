@@ -104,7 +104,7 @@ sudo vi ~/.ssh/authorized_keys # Paste here
 chmod 600 ~/.ssh/authorized_keys
 ```
 
-##### Step-03: Test SSH (from client)
+##### Step-03: Test SSH `from client`
 
 ```bash
 ssh jakir@192.168.68.130

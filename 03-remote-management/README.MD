@@ -33,8 +33,8 @@ sudo systemctl enable --now ssh
 
 ### Server–Client Remote Connectivity Using SSH
 
-- Server Machine: `192.168.68.130`
-- Client Machine: `192.168.68.135`
+- Server Machine: `192.168.1.112`
+- Client Machine: `192.168.1.113`
 
 #### On both machine
 
@@ -46,7 +46,7 @@ sudo systemctl start ssh
 
 #### Way One: Automated using ssh-copy-id - `Recommended`
 
-##### Step-01: On Client Machine `192.168.68.135`
+##### Step-01: On Server Machine `192.168.1.113`
 
 ```bash
 # Non-root user
@@ -57,11 +57,12 @@ sudo chmod 600 ~/.ssh/id_ed25519
 sudo chmod 644 ~/.ssh/id_ed25519.pub
 ```
 
-##### Step-02: Copy `Authorized_Keys` key to Server Machine `192.168.68.130`
+##### Step-02: Copy `Authorized_Keys` key to Server Machine `192.168.1.112`
 
 ```bash
-# On Client Machine
-sudo ssh-copy-id -i ~/.ssh/id_ed25519.pub jakir@192.168.68.130
+# On Server Machine
+sudo ssh-copy-id -i ~/.ssh/id_ed25519.pub jakir@192.168.1.113
+sudo ssh-copy-id -i ~/.ssh/id_ed25519.pub -p 2200 jakir@192.168.1.113
 # authorized_keys file on Server Machine
 cat authorized_keys
 ```
@@ -69,18 +70,18 @@ cat authorized_keys
 ##### Step-03: Test SSH (from client)
 
 ```bash
-ssh jakir@192.168.68.130
+ssh jakir@192.168.1.112
 ```
 
 > You should log in without a password.
 
 #### Way Two: Manual Method `Copy–Paste Public Key`
 
-##### Step-01: On Client Machine `192.168.68.135`
+##### Step-01: On Client Machine `192.168.1.113`
 
 ```bash
 # Generate key (Recommended Modern Algorithm)
-ssh-keygen -t ed25519 -C "jakir@192.168.68.135"
+ssh-keygen -t ed25519 -C "jakir@192.168.1.113"
 ```
 
 ```bash
@@ -91,7 +92,7 @@ sudo chmod 644 ~/.ssh/id_ed25519.pub
 
 ```bash
 cat ~/.ssh/id_ed25519.pub # Copy the key
-ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDIA7n4RvpTmCZKYW6ekUVioTuLdjV4mEBV6ym2hSV/z jakir@192.168.68.135
+ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDIA7n4RvpTmCZKYW6ekUVioTuLdjV4mEBV6ym2hSV/z jakir@192.168.1.113
 ```
 
 ##### Step-02: On Server Machine `192.168.68.132`
@@ -107,7 +108,7 @@ chmod 600 ~/.ssh/authorized_keys
 ##### Step-03: Test SSH `from client`
 
 ```bash
-ssh jakir@192.168.68.130
+ssh jakir@192.168.1.112
 ```
 
 > You should log in without a password.

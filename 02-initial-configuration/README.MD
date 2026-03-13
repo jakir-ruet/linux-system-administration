@@ -65,7 +65,7 @@ network:
   version: 2
 ```
 
-Or
+Or [Recommended]
 
 ```YAML
 # This is the network config written by 'subiquity'
@@ -74,14 +74,14 @@ network:
   renderer: networkd
   ethernets:
     ens160:
-      dhcp4: false
+      dhcp4: no
       addresses:
-        - 192.168.13.129/32
-      routes:
-        - to: default
-          via: 192.168.13.1
+        - 192.168.1.110/24
+      gateway4: 192.168.1.254
       nameservers:
-        addresses: [192.18.145.1,8.8.8.8]
+        addresses:
+          - 8.8.8.8
+          - 8.8.4.4
 ```
 
 ```bash
@@ -319,3 +319,4 @@ java --version
 echo $PATH
 echo $JAVA_HOME
 ```
+

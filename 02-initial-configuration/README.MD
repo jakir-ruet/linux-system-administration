@@ -55,6 +55,27 @@ Initialize IP Address on `00-installer-config.yaml`
 ```YAML
 # This is the network config written by 'subiquity'
 network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    enp0s8:
+      dhcp4: no
+      addresses:
+        - 192.168.1.117/24
+      routes:
+        - to: default
+          via: 192.168.1.254
+      nameservers:
+        addresses:
+          - 8.8.8.8
+          - 8.8.4.4
+```
+
+Or
+
+```YAML
+# This is the network config written by 'subiquity'
+network:
   ethernets:
     ens160:
       dhcp4: false
@@ -63,25 +84,6 @@ network:
       nameservers:
         addresses: [192.18.145.1, 8.8.8.8]
   version: 2
-```
-
-Or [Recommended]
-
-```YAML
-# This is the network config written by 'subiquity'
-network:
-  version: 2
-  renderer: networkd
-  ethernets:
-    ens160:
-      dhcp4: no
-      addresses:
-        - 192.168.1.110/24
-      gateway4: 192.168.1.254
-      nameservers:
-        addresses:
-          - 8.8.8.8
-          - 8.8.4.4
 ```
 
 ```bash

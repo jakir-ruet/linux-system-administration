@@ -59,13 +59,15 @@ Broadcasting is an addressing technique available in IPv4 to address data to all
 
 IPv4 addresses are divided into 5 classes: A, B, C, D, and E, based on their first octet (the first 8 bits of the address).
 
-| Class | Address Range | Subnet Mask    | Example IP | Leading Bits | Max Networks | Application                    |
-| ----- | ------------- | -------------- | ---------- | ------------ | ------------ | ------------------------------ |
-| A     | 1 – 126       | 255.0.0.0      | 1.1.1.1    | 0xxxxxxx     | 128          | Large networks with many hosts |
-| B     | 128 – 191     | 255.255.0.0    | 128.1.1.1  | 10xxxxxx     | 16,384       | Medium-sized networks          |
-| C     | 192 – 223     | 255.255.255.0  | 192.1.1.1  | 110xxxxx     | 2,097,152    | Small networks / LANs          |
-| D     | 224 – 239     | Not Applicable | –          | 1110xxxx     | –            | Multicasting                   |
-| E     | 240 – 254     | Not Applicable | –          | 1111xxxx     | –            | Experimental / Research (R&D)  |
+**Complete IP Address Classes Table (Detailed)**
+
+| Class | Range        | Default Subnet Mask | Leading Bits | Total Bits | Fixed Bits | Remaining Bits | Network Bits | Host Bits | Max Networks        | Max Hosts per Network     | Size                  |
+|-------|-------------|--------------------|--------------|------------|------------|----------------|--------------|-----------|----------------------|---------------------------|-----------------------|
+| A     | 1 – 126     | 255.0.0.0          | 0xxxxxxx     | 8          | 1          | 7              | 7            | 24        | 2⁷ = 128             | 2²⁴ − 2 = 16,777,214      | Large                 |
+| B     | 128 – 191   | 255.255.0.0        | 10xxxxxx     | 16         | 2          | 14             | 14           | 16        | 2¹⁴ = 16,384         | 2¹⁶ − 2 = 65,534          | Medium                |
+| C     | 192 – 223   | 255.255.255.0      | 110xxxxx     | 24         | 3          | 21             | 21           | 8         | 2²¹ = 2,097,152      | 2⁸ − 2 = 254              | Small                 |
+| D     | 224 – 239   | N/A                | 1110xxxx     | 32         | 4          | N/A            | N/A          | N/A       | N/A                  | N/A                       | Multicasting          |
+| E     | 240 – 255   | N/A                | 1111xxxx     | 32         | 4          | N/A            | N/A          | N/A       | N/A                  | N/A                       | Experimental/Research |
 
 ##### Network and Host ID Table
 

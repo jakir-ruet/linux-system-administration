@@ -150,10 +150,31 @@ A subnet mask is a 32-bit address used to distinguish between a network address 
 
 >**Notes**: `1` represent networks, `0` represent hosts
 
-##### Two types of subnet masks are
+##### Types of Subnet Masks
 
-- The default Subnet Mask is the number of bits which is reserved by the address class. Using this default mask will accommodate a single network subnet in the relative class.
-- A Custom Subnet Mask can be defined by an administrator to accommodate many networks.
+**1. Classful Subnet Masks (Default Subnet Masks)**
+
+These are fixed masks based on the IP address class:
+
+| Class | Default Subnet Mask |
+|-------|--------------------|
+| A     | 255.0.0.0          |
+| B     | 255.255.0.0        |
+| C     | 255.255.255.0      |
+
+**2. Classless Subnet Masks (CIDR – Classless Inter-Domain Routing)**
+
+These are flexible and use prefix notation (e.g., /24, /16), allowing efficient IP allocation.
+
+| CIDR Notation     | Subnet Mask         | Description                                      |
+|------------------|--------------------|--------------------------------------------------|
+| 192.168.1.0/24   | 255.255.255.0      | Common in small networks (home/office LANs)      |
+| 10.0.0.0/8       | 255.0.0.0          | Used for very large networks                     |
+| 172.16.0.0/16    | 255.255.0.0        | Medium-sized networks                            |
+| 192.168.1.0/26   | 255.255.255.192    | Smaller subnets (64 IPs per subnet)              |
+| 192.168.1.0/30   | 255.255.255.252    | Point-to-point links (2 usable IPs)              |
+
+> **Key Concept:** In CIDR notation, the number after “/” (e.g., /24) represents the number of bits used for the **network portion** of the IP address.
 
 #### Let's explore an example
 

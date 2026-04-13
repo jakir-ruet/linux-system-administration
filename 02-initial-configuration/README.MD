@@ -43,6 +43,18 @@ ifconfig
 ifconfig -a
 ```
 
+**Kernel IP routing table**
+
+| Destination   | Gateway                  | Genmask       | Flags | Interface       | Meaning                                                                        |
+| ------------- | ------------------------ | ------------- | ----- | --------------- | ------------------------------------------------------------------------------ |
+| default       | UBUNTU-SERVER.mshome.net | 0.0.0.0       | UG    | eth0            | Default route → sends all unknown traffic to the main router (internet access) |
+| 172.17.0.0    | 0.0.0.0                  | 255.255.0.0   | U     | docker0         | Docker internal network for containers                                         |
+| 172.24.16.0   | 0.0.0.0                  | 255.255.240.0 | U     | eth0            | Local network → direct communication (no gateway needed)                       |
+| 192.168.49.0  | 0.0.0.0                  | 255.255.255.0 | U     | br-bef0663229f3 | Custom Docker bridge network                                                   |
+| 192.168.122.0 | 0.0.0.0                  | 255.255.255.0 | U     | virbr0          | Virtual machine network (libvirt/KVM)                                          |
+
+![Kernel IP routing table](/img/kernel-IP-routing-table.png)
+
 Go to `/etc/netplan/`
 
 ```bash
@@ -50,7 +62,7 @@ cp 00-installer-config.yaml 00-installer-config.yaml_bak # take backup
 nano 00-installer-config.yaml
 ```
 
-Initialize IP Address on `00-installer-config.yaml`
+**Initialize IP Address on `00-installer-config.yaml`**
 
 ```YAML
 # This is the network config written by 'subiquity'
@@ -321,4 +333,3 @@ java --version
 echo $PATH
 echo $JAVA_HOME
 ```
-

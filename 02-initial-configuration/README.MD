@@ -73,7 +73,7 @@ network:
     enp0s8:
       dhcp4: no
       addresses:
-        - 192.168.1.117/24
+        - 192.168.1.110/24
       routes:
         - to: default
           via: 192.168.1.254
@@ -81,21 +81,6 @@ network:
         addresses:
           - 8.8.8.8
           - 8.8.4.4
-```
-
-Or
-
-```YAML
-# This is the network config written by 'subiquity'
-network:
-  ethernets:
-    ens160:
-      dhcp4: false
-      addresses: [192.168.3.128/24]
-      gateway4: 192.168.3.1
-      nameservers:
-        addresses: [192.18.145.1, 8.8.8.8]
-  version: 2
 ```
 
 ```bash
@@ -108,6 +93,29 @@ netplan apply
 sudo systemctl restart systemd-networkd
 netplan –debug  apply
 ifconfig
+```
+
+#### Static IP Configuration in Kali Linux
+
+```bash
+nmcli con show
+```
+
+```bash
+sudo nmcli con mod "Wired connection 1" ipv4.addresses 192.168.1.30/24
+sudo nmcli con mod "Wired connection 1" ipv4.gateway 192.168.1.254
+sudo nmcli con mod "Wired connection 1" ipv4.dns "8.8.8.8"
+sudo nmcli con mod "Wired connection 1" ipv4.method manual
+```
+
+```bash
+sudo nmcli con down "Wired connection 1"
+sudo nmcli con up "Wired connection 1"
+```
+
+```bash
+ip a
+ping 8.8.8.8
 ```
 
 #### Static IP Configuration in RedHat
@@ -129,7 +137,7 @@ Put this configuration
 ```ini
 [ipv4]
 method=manual
-addresses=192.168.1.100/24
+addresses=192.168.1.20/24
 gateway=192.168.1.254
 dns=8.8.8.8;
 ```

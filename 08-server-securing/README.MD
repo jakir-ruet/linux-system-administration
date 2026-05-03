@@ -411,3 +411,202 @@ To get a trusted certificate, submit mydomain.csr to a public CA (e.g., Let's En
 | N/A                                                | SSLEngine on                                        |
 | ssl_certificate /etc/ssl/certs/mydomain.crt;       | SSLCertificateFile /etc/ssl/certs/mydomain.crt      |
 | ssl_certificate_key /etc/ssl/private/mydomain.key; | SSLCertificateKeyFile /etc/ssl/private/mydomain.key |
+
+### Virtual Private Network (VPN)
+
+A VPN creates an encrypted tunnel for `data`, `protecting user privacy`, `bypassing geo-restrictions`, and `enabling secure remote work`. Key concepts include tunneling protocols (OpenVPN, WireGuard), split tunneling (selecting routed apps), and encryption standards that secure data from unauthorized access.
+
+**Key Learning Areas & Resources:**
+
+1. `VPN Types:`
+   - `Remote Access VPN:` Connects individual users to a network, commonly used for work-from-home scenarios.
+   - `Site-to-Site VPN:` Connects entire networks, such as a branch office to a corporate headquarters.
+2. `Protocols & Security:` Understanding protocols like OpenVPN (secure), WireGuard (fast), and outdated ones like PPTP (insecure) is crucial.
+3. `How it Works:` VPNs wrap your traffic in an encrypted tunnel, hiding your IP address and data from your ISP.
+4. `Practical Skills:` Learning to configure tunnel connections, manage security keys, and apply split tunneling to choose which apps use the VPN, as seen in tools like NordVPN or Surf Shark
+
+**Common Use Cases:**
+
+- `Security:` Protecting browsing data on public Wi-Fi.
+- `Access:` Bypassing regional restrictions to stream content.
+- `Remote Work:` Accessing company intranets safely
+
+#### Cryptokey Routing
+
+It's a core security concept in the **[WireGuard](https://www.wireguard.com/)** VPN protocol that **associates peer public keys with specific allowed internal IP addresses within a tunnel**. It acts as both
+
+- a routing table for outgoing traffic and
+- an access control list (ACL) for incoming traffic,
+
+To ensuring high-speed, secure packet encapsulation over UDP.
+
+```bash
+# Laptop - Public
+[Peer]
+PublicKey = PUB_LAPTOP
+AllowedIPs = 10.10.10.2/24
+
+# Home Server - Public
+[Peer]
+PublicKey = PUB_HOME
+AllowedIPs = 10.10.10.3/24
+```
+
+> **Meaning:**
+>
+> - If packet is for 10.10.10.2 → send to Laptop
+> - If packet is for 10.10.10.3 → send to Home Server
+
+#### Here I discuss complete hands-on lab using three labs.
+
+##### Objective
+
+Each server can communicate each other very friendly, securely and firstly.
+
+```bash
+Laptop (client)  ←→  VPS (hub)  ←→  Home Server
+```
+
+##### What You Need
+
+1. 1 VPS (public IP) → Acts as hub
+2. 2 Machines (Laptop + Home Server)
+3. OS: Linux (Ubuntu 20.04+ recommended)
+4. Root or sudo access
+
+##### Install WireGuard (All Nodes)
+
+```bash
+sudo apt update
+sudo apt install wireguard -y
+wg # Verify
+```
+
+##### Generate Keys (All Nodes)
+
+```bash
+wg genkey | tee privatekey | wg pubkey > publickey
+cat privatekey
+cat publickey
+```
+
+##### Save them carefully
+
+| Node        | Private Key | Public Key |
+| ----------- | ----------- | ---------- |
+| VPS         | PRIV_V      | PUB_V      |
+| Laptop      | PRIV_L      | PUB_L      |
+| Home Server | PRIV_H      | PUB_H      |
+
+##### Assign VPN IPs
+
+```bash
+VPS          → 10.10.10.1/24
+Laptop       → 10.10.10.2/24
+Home Server  → 10.10.10.3/24
+```
+
+##### Configure VPS (Hub)
+
+```bash
+sudo nano /etc/wireguard/wg0.conf
+```
+
+```bash
+# VPS
+[Interface]
+PrivateKey = PRIV_V
+Address = 10.10.10.1/24
+ListenPort = 51820
+
+# Laptop
+[Peer]
+PublicKey = PUB_L
+AllowedIPs = 10.10.10.2/24
+
+# Home Server
+[Peer]
+PublicKey = PUB_H
+AllowedIPs = 10.10.10.3/24
+```
+
+##### Configure Laptop
+
+```bash
+sudo nano /etc/wireguard/wg0.conf
+```
+
+```bash
+[Interface]
+PrivateKey = PRIV_L
+Address = 10.10.10.2/24
+
+[Peer]
+PublicKey = PUB_V
+Endpoint = VPS_PUBLIC_IP:51820  # Replace VPS_PUBLIC_IP
+AllowedIPs = 10.10.10.0/24
+PersistentKeepalive = 25
+```
+
+##### Configure Home Server
+
+```bash
+sudo nano /etc/wireguard/wg0.conf
+```
+
+```bash
+[Interface]
+PrivateKey = PRIV_H
+Address = 10.10.10.3/24
+
+[Peer]
+PublicKey = PUB_V
+Endpoint = VPS_PUBLIC_IP:51820 # Replace VPS_PUBLIC_IP
+AllowedIPs = 10.10.10.0/24
+PersistentKeepalive = 25
+```
+
+##### Enable IP Forwarding (VPS ONLY)
+
+```bash
+sudo nano /etc/sysctl.conf
+```
+
+```bash
+net.ipv4.ip_forward=1 # Uncomment/add
+iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE # You ALSO need NAT (if routing internet or cross-network traffic)
+```
+
+```bash
+sudo sysctl -p
+```
+
+##### Allow Firewall (VPS)
+
+```bash
+sudo ufw allow 51820/udp
+sudo ufw reload
+```
+
+##### Start WireGuard (All Nodes)
+
+```bash
+sudo wg-quick up wg0
+sudo systemctl enable wg-quick@wg0
+```
+
+##### Verify Connections - Run on any node
+
+```bash
+wg
+```
+
+> You should see: `latest handshake` & `transfer stats`
+
+##### Test Connectivity
+
+```bash
+ping 10.10.10.1   # From Laptop (VPS)
+ping 10.10.10.3   # From Laptop (Home Server)
+ping 10.10.10.2   # From Home Server (Laptop)
+```
